@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <script>
+    var links=new Array();
+    links[0]="snake.html";
+    links[1]="rock_paper.html";
+    links[2]="calci.html";
+    links[3]="todo_list.html";
+    function openLink()
+    {
+      var i=Math.floor(Math.random() * links.length);
+      parent.location=links[i];
+  
+
+      return false;
+    }
+  </script>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./rock_paper.css" />
+    <title>Rock paper and scissors</title>
+  </head>
+  <body>
+    <section class="game">
+      <div class="score">
+        <div class="player-score">
+          <h2>Player</h2>
+          <p>0</p>
+        </div>
+        <div class="computer-score">
+          <h2>Computer</h2>
+          <p>0</p>
+        </div>
+      </div>
+
+      <div class="intro">
+        <h1>Rock Paper and Scissors</h1>
+        <button>Let's Play</button>
+      </div>
+          <img class="a" src="img3.png" onclick="openLink()"> 
+
+      <div class="match fadeOut">
+        <h2 class="winner">Choose an option</h2>
+        <div class="hands">
+          <img class="player-hand" src="rock.png" alt="" />
+          <img class="computer-hand" src="rock.png" alt="" />
+        </div>
+        <div class="options">
+          <button class="rock">rock</button>
+          <button class="paper">paper</button>
+          <button class="scissors">scissors</button>
+        </div>
+      </div>
+    </section>
+
+    <script src="rock_paper.js"></script>
+  </body>
+</html>

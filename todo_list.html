@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Todo list</title>
+
+  <link rel="stylesheet" type="text/css" href="todo.css">
+        <script>
+    var links=new Array();
+    links[0]="snake.html";
+    links[1]="rock_paper.html";
+    links[2]="calci.html";
+    links[3]="todo_list.html";
+    function openLink()
+    {
+      var i=Math.floor(Math.random() * links.length);
+      parent.location=links[i];
+      return false;
+    }
+  </script>
+</head>
+
+<body>
+
+<img class="a" src="img3.png" onclick="openLink()">
+  <div class="container">
+    <h1 class="heading">
+      <span>Todo list</span>
+      <span aria-hidden="true" aria-label="A white piece of paper with text written on it by a yellow pencil">📝</span>
+    </h1>
+    <form id="add-todo-form">
+      <div class="form-group">
+        <input id="new-todo-input" type="text" class="input" placeholder="Anything to do today?">
+        <button class="button form-group__submit">Add</button>
+      </div>
+    </form>
+    <ul id="todos" class="todos"></ul>
+  </div>
+
+  <script>
+    (() => {
+      const addTodoForm = document.querySelector('#add-todo-form');
+      const newTodoInput = document.querySelector('#new-todo-input');
+      const todos = document.querySelector('#todos');
+
+      const handleTodoEditClick = event => {
+        event.stopPropagation();
+
+        const editButton = event.currentTarget;
+        const todo = editButton.parentElement.parentElement;
+        let todoTitle = todo.querySelector('.todo__title');
+        let todoInput = todo.querySelector('.todo__input');
+
+        if (todoTitle) {
+          todoInput = document.createElement('input');
+          todoInput.classList.add('input', 'todo__input');
+          todoInput.value = todoTitle.textContent;
+
+          todo.removeChild(todoTitle);
+          todo.prepend(todoInput);
+        } else {
+          todoTitle = document.createElement('span');
+          todoTitle.classList.add('todo__title');
+          const title = todoInput.value.trim();
+
+          if (title) {
+            todoTitle.textContent = todoInput.value;
+            todo.removeChild(todoInput);
+            todo.prepend(todoTitle);
+          }
+        }
+      };
+
+      const handleTodoDeleteClick = event => {
+        event.stopPropagation();
+
+        const deleteButton = event.currentTarget;
+        const todo = deleteButton.parentElement.parentElement;
+        todo.classList.add('todo--delete');
+
+        setTimeout(() => {
+          todos.removeChild(todo);
+        }, 300);
+      };
+
+      const handleTodoTitleClick = event => {
+        const todo = event.currentTarget;
+        todo.classList.toggle('todo__title--done');
+      };
+
+      function createTodo(value) {
+        const todoTitle = document.createElement('span');
+        todoTitle.classList.add('todo__title');
+        todoTitle.textContent = value;
+        todoTitle.addEventListener('click', handleTodoTitleClick);
+
+        const item = document.createElement('li');
+        item.classList.add('todo');
+
+        const editButton = document.createElement('button');
+        editButton.classList.add('button', 'todo__button', 'todo__button--edit');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', handleTodoEditClick);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('button', 'todo__button', 'todo__button--delete');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', handleTodoDeleteClick);
+
+        const buttonsWrapper = document.createElement('div');
+        buttonsWrapper.classList.add('todo__buttons-wrapper');
+        buttonsWrapper.append(editButton);
+        buttonsWrapper.append(deleteButton);
+
+        item.appendChild(todoTitle);
+        item.appendChild(buttonsWrapper);
+
+        return item;
+      }
+
+      const handleFormSubmit = event => {
+        event.preventDefault();
+
+        const task = newTodoInput.value.trim();
+
+        if (!task.length) return;
+
+        const todo = createTodo(task);
+        todos.appendChild(todo);
+
+        newTodoInput.value = '';
+      };
+
+      addTodoForm.addEventListener('submit', handleFormSubmit);
+    })();
+  </script>
+</body>
+
+</html>
